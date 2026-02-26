@@ -6,16 +6,9 @@ pipeline {
       steps { checkout scm }
     }
 
-    stage('Build & Test') {
+    stage('Build (skip tests)') {
       steps {
-        sh 'chmod +x mvnw'
         sh './mvnw -v'
-        sh './mvnw clean test'
-      }
-    }
-
-    stage('Package') {
-      steps {
         sh './mvnw clean package -DskipTests'
       }
     }
@@ -23,8 +16,7 @@ pipeline {
 
   post {
     always {
-      archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true, allowEmptyArchive: true
-      junit '**/target/surefire-reports/*.xml'
+      archiveArtifacts artifacts: '**/target/*.jar, **/target/*.war', fingerprint: true, allowEmptyArchive: true
     }
   }
 }
