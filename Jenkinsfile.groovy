@@ -1,28 +1,22 @@
 pipeline {
   agent any
 
-  tools {
-    // Si no tienes Maven configurado como tool en Jenkins, quitamos esta sección luego
-    maven 'Maven'
-  }
-
   stages {
     stage('Checkout') {
-      steps {
-        checkout scm
-      }
+      steps { checkout scm }
     }
 
     stage('Build & Test') {
       steps {
-        sh 'mvn -v'
-        sh 'mvn clean test'
+        sh 'chmod +x mvnw'
+        sh './mvnw -v'
+        sh './mvnw clean test'
       }
     }
 
     stage('Package') {
       steps {
-        sh 'mvn clean package -DskipTests'
+        sh './mvnw clean package -DskipTests'
       }
     }
   }
