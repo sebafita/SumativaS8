@@ -6,9 +6,9 @@ pipeline {
       steps { checkout scm }
     }
 
-    stage('Build (skip tests)') {
+    stage('Build') {
       steps {
-        sh './mvnw -v'
+        sh 'chmod +x mvnw'
         sh './mvnw clean package -DskipTests'
       }
     }
@@ -16,7 +16,7 @@ pipeline {
 
   post {
     always {
-      archiveArtifacts artifacts: '**/target/*.jar, **/target/*.war', fingerprint: true, allowEmptyArchive: true
+      archiveArtifacts artifacts: '**/target/*.jar, **/target/*.war', allowEmptyArchive: true
     }
   }
 }
